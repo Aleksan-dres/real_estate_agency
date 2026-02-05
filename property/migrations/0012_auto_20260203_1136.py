@@ -1,5 +1,3 @@
-
-
 from django.db import migrations
 
 
@@ -7,7 +5,7 @@ def set_owner_flat_relations(apps, schema_edition):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
 
-    for flat in Flat.objects.all():
+    for flat in Flat.objects.all().iterator():
         owner = Owner.objects.filter(
             full_name=flat.owner,
             phonenumber=flat.owners_phonenumber
@@ -31,3 +29,4 @@ class Migration(migrations.Migration):
 
     operations = [migrations.RunPython(set_owner_flat_relations, reverse_func),
                   ]
+
