@@ -5,16 +5,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Flat(models.Model):
-    owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
-    owner_pure_phone = PhoneNumberField('Нормализованный номер владельца', blank=True, region='RU')
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
         db_index=True)
     
     
-    new_building = models.BooleanField( null=True,blank=True,default=None)
+    new_building = models.BooleanField( null=True,blank=True,default=None,db_index=True)
     description = models.TextField('Текст объявления', blank=True)
     price = models.IntegerField('Цена квартиры', db_index=True)
 
@@ -58,8 +55,8 @@ class Flat(models.Model):
 
 
 class Complaint(models.Model): 
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
-    flat = models.ForeignKey(Flat, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="complaints_by_user",) 
+    flat = models.ForeignKey(Flat, on_delete=models.CASCADE, related_name="complaints_by_flat") 
     text = models.TextField('Текст жалобы') 
 
 
