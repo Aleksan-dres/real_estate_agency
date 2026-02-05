@@ -1,5 +1,3 @@
-
-
 from django.db import migrations
 
 
@@ -7,7 +5,7 @@ def create_owner(apps, schema_edition):
     Flat = apps.get_model("property", "Flat") 
     Owner = apps.get_model("property", "Owner") 
 
-    for flat in Flat.objects.all(): 
+    for flat in Flat.objects.all().iterator(): 
         owner, created = Owner.objects.get_or_create(
             full_name=flat.owner,
             defaults={ 
@@ -37,3 +35,4 @@ class Migration(migrations.Migration):
 
     operations = [migrations.RunPython(create_owner, reverse_func),
     ]
+
