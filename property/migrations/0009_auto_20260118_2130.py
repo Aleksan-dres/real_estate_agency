@@ -1,5 +1,4 @@
 
-
 from django.db import migrations 
 from phonenumbers import parse, format_number, PhoneNumberFormat
 from phonenumbers import NumberParseException
@@ -7,7 +6,7 @@ from phonenumbers import NumberParseException
 
 def auto_phone_number(apps,schema_edition): 
     Flat = apps.get_model('property', 'Flat') 
-    for flat in Flat.objects.all():  
+    for flat in Flat.objects.all().iterator():  
         if flat.owners_phonenumber: 
             try: 
                 parse_number = parse(flat.owners_phonenumber, 'RU') 
