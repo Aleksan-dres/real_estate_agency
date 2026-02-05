@@ -1,15 +1,9 @@
-
-
 from django.db import migrations
 
 def auto_status_new_building(apps,schema_edition): 
     Flat = apps.get_model('property', 'Flat') 
-    for flat in Flat.objects.all():  
-        if flat.construction_year is not None and flat.construction_year >=2015: 
-            flat.new_building = True 
-        else: 
-            flat.new_building = False 
-        flat.save() 
+    Flat.objects.filter(construction_year__gte=2015).update(new_building=True)
+    Flat.objects.exclude(construction_year__gte=2015).update(new_building=False)
 
 class Migration(migrations.Migration):
 
@@ -20,3 +14,5 @@ class Migration(migrations.Migration):
     operations = [ 
         migrations.RunPython(auto_status_new_building)
     ]
+
+
